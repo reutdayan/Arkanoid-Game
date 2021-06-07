@@ -1,5 +1,3 @@
-import logic.Game;
-
 /**
  * @author Reut Dayan
  * @version 27.4.21
@@ -14,7 +12,7 @@ public class Ass5Game {
      * @param args - arguments to main.
      */
     public static void main(String[] args) {
-        Game game = new Game();
+        GameLevel game = new GameLevel();
         game.initialize();
         game.run();
     }
