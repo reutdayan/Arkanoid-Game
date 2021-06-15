@@ -9,18 +9,15 @@ import java.awt.*;
  */
 public class ScoreIndicator implements Sprite {
 
-    private Rectangle rec;
     private Counter score;
 
 
     /**
      * Constructor.
      *
-     * @param rec   -the rectangle field.
      * @param score - the score field.
      */
     public ScoreIndicator(Rectangle rec, Counter score) {
-        this.rec = rec;
         this.score = score;
     }
 
@@ -34,9 +31,7 @@ public class ScoreIndicator implements Sprite {
     public void drawOn(DrawSurface d) {
         //draw the rectangle
         d.setColor(Color.BLACK);
-        d.drawText((int) this.rec.getWidth() / 2 + (int) this.rec.getUpperLeft().getX(),
-                (int) this.rec.getHeight() / 2 + (int) this.rec.getUpperLeft().getY(),
-                "the score is:" + this.score.toString(), 25);
+        d.drawText(d.getWidth() / 2 - 40, 15, "the score is:" + this.score.toString(), 15);
     }
 
     /**

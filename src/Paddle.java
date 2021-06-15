@@ -7,6 +7,8 @@
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 
+import java.awt.*;
+
 /**
  * Gui.Shapes.Paddle class- implementing Sprite and Collidable.
  */
@@ -14,7 +16,7 @@ public class Paddle implements Sprite, Collidable {
 
     private biuoop.KeyboardSensor keyboard;
     private Rectangle rectangle;
-    private static final int VELOCITY = 8;
+    private int speed;
 
     /**
      * Constructor.
@@ -22,9 +24,10 @@ public class Paddle implements Sprite, Collidable {
      * @param keyboard  - set the keyboard field.
      * @param rectangle - set the rectangle field.
      */
-    public Paddle(KeyboardSensor keyboard, Rectangle rectangle) {
+    public Paddle(KeyboardSensor keyboard, Rectangle rectangle, int speed) {
         this.keyboard = keyboard;
         this.rectangle = rectangle;
+        this.speed = speed;
     }
 
     /**
@@ -32,8 +35,8 @@ public class Paddle implements Sprite, Collidable {
      * if the paddle exit the left screen - stop to move left
      */
     public void moveLeft() {
-        if (this.rectangle.getUpperLeft().getX() >= 10) {
-            this.moveOneStepX(-VELOCITY);
+        if (this.rectangle.getUpperLeft().getX() > 10) {
+            this.moveOneStepX(-speed);
         }
     }
 
@@ -42,8 +45,8 @@ public class Paddle implements Sprite, Collidable {
      * if the paddle exit the right screen - stop to move right
      */
     public void moveRight() {
-        if (this.rectangle.getUpperLeft().getX() + rectangle.getWidth() + 10 <= GameLevel.WIDTH) {
-            this.moveOneStepX(VELOCITY);
+        if (this.rectangle.getUpperLeft().getX() + rectangle.getWidth() + 10 < GameLevel.WIDTH) {
+            this.moveOneStepX(speed);
         }
 
     }
@@ -73,6 +76,9 @@ public class Paddle implements Sprite, Collidable {
     @Override
     public void drawOn(DrawSurface d) {
         this.rectangle.drawOn(d);
+        d.setColor(Color.BLACK);
+        d.drawRectangle((int) this.rectangle.getUpperLeft().getX(), (int) this.rectangle.getUpperLeft().getY(),
+                (int) this.rectangle.getWidth(), (int) this.rectangle.getHeight());
     }
 
     // Collidable

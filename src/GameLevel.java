@@ -11,6 +11,7 @@ import biuoop.Sleeper;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Game class- the class that manage the game.
@@ -30,22 +31,24 @@ public class GameLevel implements Animation {
     private AnimationRunner runner;
     private boolean running;
     private KeyboardSensor keyboard;
+    private LevelInformation level;
 
     /**
      * Constructor.
      * <p>
      * create new sprites, environment and sleeper to game.
      */
-    public GameLevel() {
+    public GameLevel(GUI gui, LevelInformation level,KeyboardSensor keyboard, AnimationRunner runner, Counter score) {
+        this.level = level;
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
         this.sleeper = new Sleeper();
-        this.blockCounter = new Counter(0);
-        this.ballCounter = new Counter(0);
-        this.currentScore = new Counter(0);
-        this.gui = new GUI("game", WIDTH, HEIGHT);
-        this.runner = new AnimationRunner(this.gui);
-        this.keyboard = this.gui.getKeyboardSensor();
+        this.blockCounter = new Counter(this.level.numberOfBlocksToRemove());
+        this.ballCounter = new Counter(this.level.numberOfBalls());
+        this.currentScore = score;
+        this.gui = gui;
+        this.runner = runner;
+        this.keyboard = keyboard;
     }
 
     /**
@@ -64,6 +67,24 @@ public class GameLevel implements Animation {
      */
     public void addSprite(Sprite s) {
         sprites.addSprite(s);
+    }
+
+    /**
+     * removeCollidable.
+     *
+     * @param c -remove c from collidable collection.
+     */
+    public void removeCollidable(Collidable c) {
+        environment.getCollidables().remove(c);
+    }
+
+    /**
+     * removeSprite.
+     *
+     * @param s -remove s from Sprite collection.
+     */
+    public void removeSprite(Sprite s) {
+        sprites.getSprites().remove(s);
     }
 
     /**
@@ -88,9 +109,9 @@ public class GameLevel implements Animation {
      * @param color       - set the color of the block created.
      */
     private void createFrame(ArrayList<Collidable> collidables, Color color) {
-        collidables.add(new Block(new Rectangle(new Point(0, 0), WIDTH, EDGE, color)));
-        collidables.add(new Block(new Rectangle(new Point(0, 0), EDGE, HEIGHT, color)));
-        collidables.add(new Block(new Rectangle(new Point(WIDTH - EDGE, 0), EDGE, HEIGHT, color)));
+        collidables.add(new Block(new Rectangle(new Point(0, 20), WIDTH, EDGE, color)));
+        collidables.add(new Block(new Rectangle(new Point(0, 20), EDGE, HEIGHT, color)));
+        collidables.add(new Block(new Rectangle(new Point(WIDTH - EDGE, 20), EDGE, HEIGHT, color)));
     }
 
     /**
@@ -99,22 +120,27 @@ public class GameLevel implements Animation {
      *
      * @param color - set te color of the ball to color.
      */
-    private void createBalls(Color color) {
-        // ball 1
-        Ball ball1 = new Ball(new Point(200, 260), 5, color, environment);
-        ball1.setVelocity(4, 4);
-        ball1.addToGame(this);
-        ballCounter.increase(1);
-        // ball 2
-        Ball ball2 = new Ball(new Point(400, 100), 5, color, environment);
-        ball2.setVelocity(4, 4);
-        ball2.addToGame(this);
-        ballCounter.increase(1);
-        // ball 3
-        Ball ball3 = new Ball(new Point(50, 50), 5, color, environment);
-        ball3.setVelocity(4, 4);
-        ball3.addToGame(this);
-        ballCounter.increase(1);
+    private void createBalls(Color color, List<Velocity> velocities) {
+        for (int i = 0; i < this.level.numberOfBalls(); i++) {
+            Ball ball = new Ball(new Point(400, 540), 5, color, this.environment);
+            ball.setVelocity(velocities.get(i));
+            ball.addToGame(this);
+        }
+//        // ball 1
+//        Ball ball1 = new Ball(new Point(200, 260), 5, color, environment);
+//        ball1.setVelocity(4, 4);
+//        ball1.addToGame(this);
+//        ballCounter.increase(1);
+//        // ball 2
+//        Ball ball2 = new Ball(new Point(400, 100), 5, color, environment);
+//        ball2.setVelocity(4, 4);
+//        ball2.addToGame(this);
+//        ballCounter.increase(1);
+//        // ball 3
+//        Ball ball3 = new Ball(new Point(50, 50), 5, color, environment);
+//        ball3.setVelocity(4, 4);
+//        ball3.addToGame(this);
+//        ballCounter.increase(1);
     }
 
     /**
@@ -125,8 +151,51 @@ public class GameLevel implements Animation {
      * @param keyboard    - ghe keyboard of the paddle.
      */
     private void createPaddle(ArrayList<Collidable> collidables, biuoop.KeyboardSensor keyboard) {
-        collidables.add(new Paddle(keyboard, new Rectangle(new Point(400, 570), 100, 20)));
+        collidables.add(new Paddle(keyboard, new Rectangle(
+                new Point((WIDTH - this.level.paddleWidth()) / 2, (HEIGHT - 25)),
+                this.level.paddleWidth(), 20, Color.ORANGE), this.level.paddleSpeed()));
     }
+
+    /**
+     * createBlocks.
+     * create blocks to the game.
+     *
+     * @param score         - the hit listener who keep track of the score.
+     * @param blockListener - the hit listener eho remove the blocks when hitted.
+     * @param collidables   - the collidable array the blocks will add to.
+     */
+    private void createBlocks(HitListener score, HitListener blockListener, ArrayList<Collidable> collidables) {
+//
+//        // start point
+//        int x = 290;
+//        int y = 100;
+//
+//        // width and height to all blocks
+//        int width = 50;
+//        int height = 25;
+//
+//        // creates numBlocks of lines of blocks.
+//        for (int i = 0; i < 6; i++) {
+//
+//            // create blocks in one line.
+//            for (int j = i; j < 10; j++) {
+//                createBlock(score, blockListener, collidables, colors.get(i), new Point(x, y), width, height);
+//                x = x + width;
+//                this.blockCounter.increase(1);
+//            }
+//
+//            // stairs structure.
+//            x = 290 + (i + 1) * width;
+//            y = y + height;
+//        }
+        for (Block b : this.level.blocks()) {
+            b.addHitListener(blockListener);
+            b.addHitListener(score);
+            collidables.add(b);
+        }
+    }
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 
     /**
      * createBlock.
@@ -149,31 +218,12 @@ public class GameLevel implements Animation {
     }
 
     /**
-     * removeCollidable.
-     *
-     * @param c -remove c from collidable collection.
-     */
-    public void removeCollidable(Collidable c) {
-        environment.getCollidables().remove(c);
-    }
-
-    /**
-     * removeSprite.
-     *
-     * @param s -remove s from Sprite collection.
-     */
-    public void removeSprite(Sprite s) {
-        sprites.getSprites().remove(s);
-    }
-
-    /**
      * createColorList.
      * create a list of 6 colors.
      *
-     * @param num - num of colors in colors.
      * @return - a list of colors.
      */
-    private ArrayList<Color> createColorList(int num) {
+    private ArrayList<Color> createColorList() {
         ArrayList<Color> colors = new ArrayList<Color>();
         colors.add(new Color(0, 76, 153));
         colors.add(new Color(0, 102, 204));
@@ -185,42 +235,8 @@ public class GameLevel implements Animation {
         return colors;
     }
 
-    /**
-     * createBlocks.
-     * create blocks to the game.
-     *
-     * @param score         - the hit listener who keep track of the score.
-     * @param blockListener - the hit listener eho remove the blocks when hitted.
-     * @param collidables   - the collidable array the blocks will add to.
-     * @param colors        - list of colors. in each line the blocks will change color.
-     * @param numBlocks     - num of lines of blocks.
-     */
-    private void createBlocks(HitListener score, HitListener blockListener, ArrayList<Collidable> collidables,
-                              ArrayList<Color> colors, int numBlocks) {
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        // start point
-        int x = 290;
-        int y = 100;
-
-        // width and height to all blocks
-        int width = 50;
-        int height = 25;
-
-        // creates numBlocks of lines of blocks.
-        for (int i = 0; i < 6; i++) {
-
-            // create blocks in one line.
-            for (int j = i; j < 10; j++) {
-                createBlock(score, blockListener, collidables, colors.get(i), new Point(x, y), width, height);
-                x = x + width;
-                this.blockCounter.increase(1);
-            }
-
-            // stairs structure.
-            x = 290 + (i + 1) * width;
-            y = y + height;
-        }
-    }
 
     /**
      * initialize.
@@ -237,17 +253,15 @@ public class GameLevel implements Animation {
         createDeathRegion(ballListener, collidables, Color.BLACK);
 
         // create objects in the game
-        createBalls(Color.BLACK);
+        createBalls(Color.BLACK, this.level.initialBallVelocities());
         createFrame(collidables, Color.GRAY);
-        int numOfBlocks = 6;
-        ArrayList<Color> colors = createColorList(numOfBlocks);
 
         //create blocks
         //create a block remover listener
         BlockRemover blockListener = new BlockRemover(this, this.blockCounter);
         //create score tracking listener
         ScoreTrackingListener scoreListener = new ScoreTrackingListener(this.currentScore);
-        createBlocks(scoreListener, blockListener, collidables, colors, numOfBlocks);
+        createBlocks(scoreListener, blockListener, collidables);
 
         //create paddle
         createPaddle(collidables, keyboard);
@@ -261,6 +275,7 @@ public class GameLevel implements Animation {
         for (Collidable collidable : collidables) {
             collidable.addToGame(this);
         }
+
     }
 
 //    /**
@@ -304,7 +319,7 @@ public class GameLevel implements Animation {
     public void run() {
         //TODO- implement createBallsOnTopOfPaddle
         //this.createBallsOnTopOfPaddle(); // or a similar method
-        this.runner.run(new CountdownAnimation(3,2,sprites));
+        this.runner.run(new CountdownAnimation(3, 2, sprites));
 
         this.running = true;
         // use our runner to run the current animation -- which is one turn of
@@ -332,9 +347,18 @@ public class GameLevel implements Animation {
     @Override
     public boolean shouldStop() {
         if (this.blockCounter.getValue() == 0 || this.ballCounter.getValue() == 0) {
-            gui.close();
-            return running;
+            //gui.close();
+            //return running;
+            return true;
         }
-        return !running;
+        //return !running;
+        return false;
+
+    }
+    public boolean gameOver(){
+        if (this.ballCounter.getValue()<=0){
+            return true;
+        }
+        return false;
     }
 }
