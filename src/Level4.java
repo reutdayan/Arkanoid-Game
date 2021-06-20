@@ -1,8 +1,13 @@
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FinalFour implements LevelInformation {
+/**
+ * @author Reut Dayan
+ * @version 20.6.21
+ * Level4 class. 4'th level.
+ */
+public class Level4 implements LevelInformation {
     @Override
     public int numberOfBalls() {
         return 3;
@@ -36,7 +41,7 @@ public class FinalFour implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return null;
+        return new Level4Background();
     }
 
     /**
@@ -47,21 +52,35 @@ public class FinalFour implements LevelInformation {
      * @param start  - the start point of the block.
      * @param width  - the width of the block.
      * @param height - the height of the block.
+     * @return a block.
      */
     private Block createBlock(Color color, Point start, int width, int height) {
         Block b = new Block(new Rectangle(start, width, height, color));
         return b;
     }
 
+    /**
+     * getColors.
+     *
+     * @return -list of colors.
+     */
     private ArrayList<Color> getColors() {
         ArrayList<Color> colors = new ArrayList<>();
-        colors.add(Color.GRAY);
-        colors.add(Color.RED);
-        colors.add(Color.YELLOW);
-        colors.add(Color.GREEN);
-        colors.add(Color.WHITE);
-        colors.add(Color.PINK);
-        colors.add(Color.CYAN);
+        colors.add(new Color(255, 204, 229));
+        colors.add(new Color(255, 204, 255));
+        colors.add(new Color(229, 204, 255));
+        colors.add(new Color(204, 204, 255));
+        colors.add(new Color(204, 229, 255));
+        colors.add(new Color(204, 255, 255));
+        colors.add(new Color(204, 255, 229));
+//
+//        colors.add(Color.GRAY);
+//        colors.add(Color.RED);
+//        colors.add(Color.YELLOW);
+//        colors.add(Color.GREEN);
+//        colors.add(Color.WHITE);
+//        colors.add(Color.PINK);
+//        colors.add(Color.CYAN);
         return colors;
     }
 
@@ -79,7 +98,7 @@ public class FinalFour implements LevelInformation {
                 blocks.add(createBlock(colors.get(i), new Point(startX, startY), width, height));
                 startX = startX + width;
             }
-            startX =10;
+            startX = 10;
             startY = startY + height;
         }
         return blocks;

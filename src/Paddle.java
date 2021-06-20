@@ -7,7 +7,7 @@
 import biuoop.DrawSurface;
 import biuoop.KeyboardSensor;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Gui.Shapes.Paddle class- implementing Sprite and Collidable.
@@ -23,6 +23,7 @@ public class Paddle implements Sprite, Collidable {
      *
      * @param keyboard  - set the keyboard field.
      * @param rectangle - set the rectangle field.
+     * @param speed     - the speed of the paddle.
      */
     public Paddle(KeyboardSensor keyboard, Rectangle rectangle, int speed) {
         this.keyboard = keyboard;
@@ -147,8 +148,8 @@ public class Paddle implements Sprite, Collidable {
         //the ball hit the top line of the paddle
         if (collisionPoint.isInLine(rectangle.getTopHorizontalLLine())) {
             int angle = getAngleByRegion(collisionPoint);
-            double speed = getSpeed(currentVelocity);
-            return Velocity.fromAngleAndSpeed(angle, speed);
+            double speed1 = getSpeed(currentVelocity);
+            return Velocity.fromAngleAndSpeed(angle, speed1);
         } else { //the ball hit the side or the bottom of the paddle
             Velocity newVelocity = new Velocity(currentVelocity.getDx(), currentVelocity.getDy());
 

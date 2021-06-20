@@ -1,8 +1,13 @@
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Green3 implements LevelInformation {
+/**
+ * @author Reut Dayan
+ * @version 20.6.21
+ * Level3 class. third level.
+ */
+public class Level3 implements LevelInformation {
     @Override
     public int numberOfBalls() {
         return 2;
@@ -35,7 +40,7 @@ public class Green3 implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return null;
+        return new Level3Background();
     }
 
     /**
@@ -46,12 +51,18 @@ public class Green3 implements LevelInformation {
      * @param start  - the start point of the block.
      * @param width  - the width of the block.
      * @param height - the height of the block.
+     * @return a block.
      */
     private Block createBlock(Color color, Point start, int width, int height) {
         Block b = new Block(new Rectangle(start, width, height, color));
         return b;
     }
 
+    /**
+     * getColors.
+     *
+     * @return list of colors.
+     */
     private ArrayList<Color> getColors() {
         ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.GRAY);

@@ -1,8 +1,13 @@
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectHit implements LevelInformation {
+/**
+ * @author Reut Dayan
+ * @version 20.6.21
+ * Level1 class. first level.
+ */
+public class Level1 implements LevelInformation {
 
     @Override
     public int numberOfBalls() {
@@ -33,14 +38,13 @@ public class DirectHit implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-
-        return null;
+        return new Level1Background();
     }
 
     @Override
     public List<Block> blocks() {
         ArrayList<Block> blocks = new ArrayList<>();
-        Block b = new Block (new Rectangle(new Point (375,150), 50,50, Color.RED));
+        Block b = new Block(new Rectangle(new Point(375, 150), 50, 50, Color.RED));
         blocks.add(b);
         return blocks;
     }

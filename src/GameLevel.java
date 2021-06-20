@@ -17,13 +17,13 @@ import java.util.List;
  * Game class- the class that manage the game.
  */
 public class GameLevel implements Animation {
-    //TODO: public field wisth and height!!!!!!!!!!!!!!!!!!!
+
     private SpriteCollection sprites;
     private GameEnvironment environment;
+    private GUI gui;
     protected static final int WIDTH = 800;
     protected static final int HEIGHT = 600;
     private static final int EDGE = 10;
-    private GUI gui;
     private Sleeper sleeper;
     private Counter blockCounter;
     private Counter ballCounter;
@@ -38,7 +38,19 @@ public class GameLevel implements Animation {
      * <p>
      * create new sprites, environment and sleeper to game.
      */
-    public GameLevel(GUI gui, LevelInformation level,KeyboardSensor keyboard, AnimationRunner runner, Counter score) {
+
+
+    /**
+     * Constructor.
+     * create new sprites, environment and sleeper to game.
+     *
+     * @param gui      -gui.
+     * @param level    - level.
+     * @param keyboard - keyboard.
+     * @param runner   - animation runner.
+     * @param score    - current score.
+     */
+    public GameLevel(GUI gui, LevelInformation level, KeyboardSensor keyboard, AnimationRunner runner, Counter score) {
         this.level = level;
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
@@ -118,7 +130,8 @@ public class GameLevel implements Animation {
      * createBalls.
      * create 2 balls.
      *
-     * @param color - set te color of the ball to color.
+     * @param color      - set te color of the ball to color.
+     * @param velocities - list of velocities of the balls.
      */
     private void createBalls(Color color, List<Velocity> velocities) {
         for (int i = 0; i < this.level.numberOfBalls(); i++) {
@@ -126,21 +139,6 @@ public class GameLevel implements Animation {
             ball.setVelocity(velocities.get(i));
             ball.addToGame(this);
         }
-//        // ball 1
-//        Ball ball1 = new Ball(new Point(200, 260), 5, color, environment);
-//        ball1.setVelocity(4, 4);
-//        ball1.addToGame(this);
-//        ballCounter.increase(1);
-//        // ball 2
-//        Ball ball2 = new Ball(new Point(400, 100), 5, color, environment);
-//        ball2.setVelocity(4, 4);
-//        ball2.addToGame(this);
-//        ballCounter.increase(1);
-//        // ball 3
-//        Ball ball3 = new Ball(new Point(50, 50), 5, color, environment);
-//        ball3.setVelocity(4, 4);
-//        ball3.addToGame(this);
-//        ballCounter.increase(1);
     }
 
     /**
@@ -148,10 +146,10 @@ public class GameLevel implements Animation {
      * create a paddle.
      *
      * @param collidables - the collidable array the paddle will add to.
-     * @param keyboard    - ghe keyboard of the paddle.
+     * @param keyboard1   - ghe keyboard of the paddle.
      */
-    private void createPaddle(ArrayList<Collidable> collidables, biuoop.KeyboardSensor keyboard) {
-        collidables.add(new Paddle(keyboard, new Rectangle(
+    private void createPaddle(ArrayList<Collidable> collidables, biuoop.KeyboardSensor keyboard1) {
+        collidables.add(new Paddle(keyboard1, new Rectangle(
                 new Point((WIDTH - this.level.paddleWidth()) / 2, (HEIGHT - 25)),
                 this.level.paddleWidth(), 20, Color.ORANGE), this.level.paddleSpeed()));
     }
@@ -165,78 +163,12 @@ public class GameLevel implements Animation {
      * @param collidables   - the collidable array the blocks will add to.
      */
     private void createBlocks(HitListener score, HitListener blockListener, ArrayList<Collidable> collidables) {
-//
-//        // start point
-//        int x = 290;
-//        int y = 100;
-//
-//        // width and height to all blocks
-//        int width = 50;
-//        int height = 25;
-//
-//        // creates numBlocks of lines of blocks.
-//        for (int i = 0; i < 6; i++) {
-//
-//            // create blocks in one line.
-//            for (int j = i; j < 10; j++) {
-//                createBlock(score, blockListener, collidables, colors.get(i), new Point(x, y), width, height);
-//                x = x + width;
-//                this.blockCounter.increase(1);
-//            }
-//
-//            // stairs structure.
-//            x = 290 + (i + 1) * width;
-//            y = y + height;
-//        }
         for (Block b : this.level.blocks()) {
             b.addHitListener(blockListener);
             b.addHitListener(score);
             collidables.add(b);
         }
     }
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-
-    /**
-     * createBlock.
-     * create one bock.
-     *
-     * @param score         - the hit listener who keep track of the score.
-     * @param blockListener - the hit listener eho remove the blocks when hitted.
-     * @param collidables   -the collidable array the block will add to.
-     * @param color         - the color the block will draw in.
-     * @param start         - the start point of the block.
-     * @param width         - the width of the block.
-     * @param height        - the height of the block.
-     */
-    private void createBlock(HitListener score, HitListener blockListener, ArrayList<Collidable> collidables,
-                             Color color, Point start, int width, int height) {
-        Block b = new Block(new Rectangle(start, width, height, color));
-        b.addHitListener(blockListener);
-        b.addHitListener(score);
-        collidables.add(b);
-    }
-
-    /**
-     * createColorList.
-     * create a list of 6 colors.
-     *
-     * @return - a list of colors.
-     */
-    private ArrayList<Color> createColorList() {
-        ArrayList<Color> colors = new ArrayList<Color>();
-        colors.add(new Color(0, 76, 153));
-        colors.add(new Color(0, 102, 204));
-        colors.add(new Color(0, 128, 255));
-        colors.add(new Color(51, 153, 255));
-        colors.add(new Color(102, 178, 255));
-        colors.add(new Color(153, 204, 255));
-        colors.add(new Color(153, 204, 255));
-        return colors;
-    }
-
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
 
     /**
      * initialize.
@@ -248,12 +180,16 @@ public class GameLevel implements Animation {
         // array list of collidable objects
         ArrayList<Collidable> collidables = new ArrayList<>();
 
+        if (this.level.getBackground() != null) {
+            this.addSprite(this.level.getBackground());
+        }
+
         //create death region
         HitListener ballListener = new BallRemover(this, ballCounter);
         createDeathRegion(ballListener, collidables, Color.BLACK);
 
         // create objects in the game
-        createBalls(Color.BLACK, this.level.initialBallVelocities());
+        createBalls(Color.WHITE, this.level.initialBallVelocities());
         createFrame(collidables, Color.GRAY);
 
         //create blocks
@@ -267,8 +203,7 @@ public class GameLevel implements Animation {
         createPaddle(collidables, keyboard);
 
         //add score indicator
-        ScoreIndicator scoreIndicator = new ScoreIndicator(new Rectangle(new Point(0, 0), 600, 70),
-                currentScore);
+        ScoreIndicator scoreIndicator = new ScoreIndicator(currentScore, this.level.levelName());
         scoreIndicator.addToGame(this);
 
         // add to game all collidable objects.
@@ -276,48 +211,13 @@ public class GameLevel implements Animation {
             collidable.addToGame(this);
         }
 
+
     }
 
-//    /**
-//     * run.
-//     * Run the game -- start the animation loop.
-//     */
-//    public void run() {
-//
-//        int framesPerSecond = 60;
-//        int millisecondsPerFrame = 1000 / framesPerSecond;
-//        while (true) {
-//            long startTime = System.currentTimeMillis(); // timing
-//
-//            DrawSurface d = this.gui.getDrawSurface();
-//            d.setColor(new Color(204, 229, 255));
-//            d.fillRectangle(0, 0, WIDTH, HEIGHT);
-//
-//            d.setColor(Color.BLACK);
-//            this.sprites.getSprites().get(0).drawOn(d);
-//            this.sprites.drawAllOn(d);
-//            this.gui.show(d);
-//            this.sprites.notifyAllTimePassed();
-//
-//            // timing
-//            long usedTime = System.currentTimeMillis() - startTime;
-//            long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
-//            if (milliSecondLeftToSleep > 0) {
-//                this.sleeper.sleepFor(milliSecondLeftToSleep);
-//            }
-//            // exit (return) when there are either no more blocks or no more balls
-//            if (ballCounter.getValue() == 0) {
-//                return;
-//            }
-//            if (blockCounter.getValue() == 0) {
-//                this.currentScore.increase(100);
-//                return;
-//            }
-//        }
-//    }
-
+    /**
+     * run the level.
+     */
     public void run() {
-        //TODO- implement createBallsOnTopOfPaddle
         //this.createBallsOnTopOfPaddle(); // or a similar method
         this.runner.run(new CountdownAnimation(3, 2, sprites));
 
@@ -339,8 +239,13 @@ public class GameLevel implements Animation {
         //this.gui.show(d);
         this.sprites.notifyAllTimePassed();
 
+        if (blockCounter.getValue() == 0) {
+            this.currentScore.increase(100);
+        }
+
         if (this.keyboard.isPressed("p")) {
-            this.runner.run(new PauseScreen(this.keyboard));
+            this.runner.run(new KeyPressStoppableAnimation(this.keyboard, KeyboardSensor.SPACE_KEY,
+                    new PauseScreen(this.keyboard)));
         }
     }
 
@@ -355,8 +260,14 @@ public class GameLevel implements Animation {
         return false;
 
     }
-    public boolean gameOver(){
-        if (this.ballCounter.getValue()<=0){
+
+    /**
+     * gameOver.
+     *
+     * @return true if no more balls remain anf false otherwise.
+     */
+    public boolean gameOver() {
+        if (this.ballCounter.getValue() <= 0) {
             return true;
         }
         return false;

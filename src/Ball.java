@@ -6,6 +6,8 @@
 
 import biuoop.DrawSurface;
 
+import java.awt.Color;
+
 /**
  * Gui.Shapes.Ball class- one point and a radius, with velocity and color.
  */
@@ -92,9 +94,8 @@ public class Ball implements Sprite {
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
         surface.fillCircle(this.getX(), this.getY(), this.radius);
-//        surface.drawLine((int) this.center.getX(), (int) this.center.getY(),
-//                (int) (this.center.getX() + 10 * this.velocity.getDx()),
-//                (int) (this.center.getY() + 10 * this.velocity.getDy()));
+        surface.setColor(Color.BLACK);
+        surface.drawCircle(this.getX(), this.getY(), this.radius);
     }
 
     /**
@@ -173,6 +174,10 @@ public class Ball implements Sprite {
             this.setVelocity(info.collisionObject().hit(this, info.collisionPoint(), this.velocity));
         }
         this.center = this.getVelocity().applyToPoint(this.center);
+
+        if (this.center.getY() <= 32) {
+            this.velocity.setDy(-this.velocity.getDy());
+        }
     }
 
     /**

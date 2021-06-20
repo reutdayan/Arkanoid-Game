@@ -20,7 +20,8 @@ public class BallRemover implements HitListener {
     }
 
     /**
-     * hitEvent -what the listener should do when a block was being hit.
+     * hitEvent.
+     * what the listener should do when a block was being hit.
      *
      * @param beingHit - the block being hit.
      * @param hitter   - the ball that hit the block.

@@ -3,6 +3,11 @@ import biuoop.KeyboardSensor;
 
 import java.util.List;
 
+/**
+ * @author Reut Dayan
+ * @version 20.6.21
+ * GameFlow class. runs all the levels.
+ */
 public class GameFlow {
 
     private AnimationRunner ar;
@@ -10,7 +15,13 @@ public class GameFlow {
     private GUI gui;
     private Counter score;
 
-
+    /**
+     * Constructor.
+     *
+     * @param ar  - the animation runner.
+     * @param ks  - the keyboard sensor.
+     * @param gui - the gui.
+     */
     public GameFlow(AnimationRunner ar, KeyboardSensor ks, GUI gui) {
         this.ar = ar;
         this.ks = ks;
@@ -18,13 +29,21 @@ public class GameFlow {
         this.gui = gui;
     }
 
-    public GameFlow (){
+    /**
+     * Constructor.
+     */
+    public GameFlow() {
         this.gui = new GUI("game", 800, 600);
         this.ar = new AnimationRunner(gui);
         this.ks = gui.getKeyboardSensor();
         this.score = new Counter(0);
     }
 
+    /**
+     * runLevels.
+     *
+     * @param levels - list of levels.
+     */
     public void runLevels(List<LevelInformation> levels) {
 
         for (LevelInformation levelInfo : levels) {
@@ -33,15 +52,18 @@ public class GameFlow {
 
             level.initialize();
 
-            while (!level.shouldStop()){
+            while (!level.shouldStop()) {
                 level.run();
             }
 
-            if (level.gameOver()){
-                this.ar.run(new EndScreen(this.ks,this.score,false));
-                return;
+            if (level.gameOver()) {
+                EndScreen end = new EndScreen(this.ks, this.score, false);
+                this.ar.run(new KeyPressStoppableAnimation(ks, KeyboardSensor.SPACE_KEY, end));
+                gui.close();
             }
         }
-        this.ar.run(new EndScreen(this.ks,this.score,true));
+        EndScreen end = new EndScreen(this.ks, this.score, true);
+        this.ar.run(new KeyPressStoppableAnimation(ks, KeyboardSensor.SPACE_KEY, end));
+        gui.close();
     }
 }

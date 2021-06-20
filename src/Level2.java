@@ -1,8 +1,14 @@
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WideEasy implements LevelInformation {
+
+/**
+ * @author Reut Dayan
+ * @version 20.6.21
+ * Level2 class. second level.
+ */
+public class Level2 implements LevelInformation {
     @Override
     public int numberOfBalls() {
         return 10;
@@ -12,7 +18,7 @@ public class WideEasy implements LevelInformation {
     public List<Velocity> initialBallVelocities() {
         ArrayList<Velocity> velocityList = new ArrayList<>();
         for (int i = 1; i <= this.numberOfBalls(); i++) {
-            velocityList.add(Velocity.fromAngleAndSpeed(260-14.5*i, -4));
+            velocityList.add(Velocity.fromAngleAndSpeed(260 - 14.5 * i, -4));
         }
         return velocityList;
     }
@@ -34,9 +40,14 @@ public class WideEasy implements LevelInformation {
 
     @Override
     public Sprite getBackground() {
-        return null;
+        return new Level2Background();
     }
 
+    /**
+     * getColors.
+     *
+     * @return -list of colors.
+     */
     private ArrayList<Color> getColors() {
         ArrayList<Color> colors = new ArrayList<>();
         colors.add(Color.RED);
@@ -62,7 +73,7 @@ public class WideEasy implements LevelInformation {
         ArrayList<Block> blocks = new ArrayList<>();
         ArrayList<Color> colors = this.getColors();
         int startX = 10;
-        int y = 150;
+        int y = 200;
         for (int i = 0; i < this.numberOfBlocksToRemove(); i++) {
             Block b = new Block(new Rectangle(new Point(startX, y), 780 / this.numberOfBlocksToRemove(),
                     30, colors.get(i)));

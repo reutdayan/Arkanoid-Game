@@ -1,6 +1,6 @@
 import biuoop.DrawSurface;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * @author Reut Dayan
@@ -10,15 +10,18 @@ import java.awt.*;
 public class ScoreIndicator implements Sprite {
 
     private Counter score;
+    private String name;
 
 
     /**
      * Constructor.
      *
      * @param score - the score field.
+     * @param name  - name.
      */
-    public ScoreIndicator(Rectangle rec, Counter score) {
+    public ScoreIndicator(Counter score, String name) {
         this.score = score;
+        this.name = name;
     }
 
     /**
@@ -31,7 +34,8 @@ public class ScoreIndicator implements Sprite {
     public void drawOn(DrawSurface d) {
         //draw the rectangle
         d.setColor(Color.BLACK);
-        d.drawText(d.getWidth() / 2 - 40, 15, "the score is:" + this.score.toString(), 15);
+        d.drawText(d.getWidth() / 4 - 40, 15, "the score is:" + this.score.toString(), 15);
+        d.drawText(d.getWidth() * 3 / 4 - 40, 15, "Level Name: " + this.name, 15);
     }
 
     /**

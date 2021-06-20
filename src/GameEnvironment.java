@@ -62,7 +62,7 @@ public class GameEnvironment {
         for (Collidable c : collidables) {
             Point intersection = trajectory.closestIntersectionToStartOfLine(c.getCollisionRectangle());
             if (intersection != null) {
-                if (intersection.distance(trajectory.start()) <= minDistance) {
+                if (intersection.distance(trajectory.start()) < minDistance) {
                     closestIntersection = intersection;
                     minDistance = intersection.distance(trajectory.start());
                     col = c;

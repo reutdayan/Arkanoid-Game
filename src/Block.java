@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Gui.Shapes.Block is a class implementing Collidable, Sprite.
+ * Block is a class implementing Collidable, Sprite.
  */
 public class Block implements Collidable, Sprite, HitNotifier {
 
