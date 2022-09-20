@@ -1,4 +1,4 @@
-# Arkanoid
+# Arkanoid Game
 a block breaker game in JAVA.
 
 ## How to Play?
@@ -11,3 +11,14 @@ Try to break all the blocks.
 3. Add the build file to ant.
 4. comile and run :)
 
+## Level 1
+<img src="/images/level1.jpg" alt="Level 1 image" title="Level 1">
+
+## Level 2
+<img src="/images/level2.jpg" alt="Level 2 image" title="Level 2">
+
+## Level 3
+<img src="/images/level3.jpg" alt="Level 3 image" title="Level 3">
+
+## Level 4
+<img src="/images/level4.jpg" alt="Level 4 image" title="Level 4">
