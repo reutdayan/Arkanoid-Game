@@ -1,5 +1,5 @@
 # Arkanoid Game
-a block breaker game in JAVA.
+A block breaker game in JAVA.
 
 ## How to Play?
 Control the paddle by keyboard - do not let the balls escape!
@@ -9,7 +9,7 @@ Try to break all the blocks.
 1. Download the code to your idea. 
 2. Add ant librery.
 3. Add the build file to ant.
-4. comile and run :)
+4. Compile and run :)
 
 ## Level 1
 <img src="/images/level1.jpg" alt="Level 1 image" title="Level 1">
