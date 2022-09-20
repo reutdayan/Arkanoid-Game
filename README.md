@@ -6,8 +6,8 @@ Control the paddle by keyboard - do not let the balls escape!
 Try to break all the blocks.
 
 ## How to Start?
-1. Download the code to your idea. 
-2. Add ant librery.
+1. Download the code to your IDE. 
+2. Add `ant` library.
 3. Add the build file to ant.
 4. Compile and run :)
 
