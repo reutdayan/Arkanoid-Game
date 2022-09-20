@@ -11,5 +11,8 @@ Try to break all the blocks.
 3. Add the build file to ant.
 4. comile and run :)
 
+## Notes
+To controle the order or number of levels- change the args in the build file.
+
 
 
