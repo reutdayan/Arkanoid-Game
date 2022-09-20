@@ -8,7 +8,7 @@ Try to break all the blocks.
 ## How to Start?
 1. Download the code to your IDE. 
 2. Add `ant` library.
-3. Add the build file to ant.
+3. Add the build.xml file to ant.
 4. Compile and run :)
 
 ## Level 1
